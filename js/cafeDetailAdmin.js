@@ -1,8 +1,10 @@
 // cafeDetailAdmin 파일들에서 공통적으로 사용할 js 파일
 
+// 현재 edit는 사용하지 않음
 function edit() {
-    console.log("테스트 출력")
-
+    let article = document.getElementById("article").innerHTML;
+    console.log(article);
+    location.href="cafeUpdateDemo.html";
 }
 
 function del() {
