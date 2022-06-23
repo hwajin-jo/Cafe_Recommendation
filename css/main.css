@@ -20,7 +20,9 @@ html, body {
     position: relative;
     margin: 15px 15px;
     padding: 0;
-}
+}.clear{clear:both}
+
+li.on{color:red}
 
 #categori li a {
     display: block;
@@ -39,15 +41,6 @@ html, body {
     padding: 0;
 }
 
-#categori li ul li {
-    display: none;
-    position: absolute;
-    right: 1px;
-    margin-top: 50px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
 
 #categori li:hover > ul li {
     display: block;
@@ -143,3 +136,12 @@ html, body {
     margin-bottom: 20px;   
     
 }
+
+/* .div2 {
+    display: flex;
+    justify-content: center;
+}
+
+.clicked {
+    color : gold;
+} */
