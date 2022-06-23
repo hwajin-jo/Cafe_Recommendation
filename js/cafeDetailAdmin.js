@@ -12,3 +12,9 @@ function del() {
         alert("삭제 기능은 아직 지원하지 않습니다");
     }
 }
+
+// 새 글 등록
+function apply() {
+    alert("등록 기능은 아직 지원하지 않습니다")
+    location.href="cafesAdmin.html";
+}
