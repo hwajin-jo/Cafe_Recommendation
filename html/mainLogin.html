@@ -26,11 +26,17 @@
 
     <br><br>
 
-    <section id="mainDiv">
-        <div style="width: 600px; height: 400px; margin-top: 150px; margin-left: 600px; background-color: gray;">
-
+        <div id="slideShow">
+            <ul id="slides">
+                <li><img  src="../img/cafe_a.jpg" alt=""></li>
+                <li><img  src="../img/cafe_b.jpg" alt=""></li>
+                <li><img  src="../img/cafe_c.jpg" alt=""></li>
+            </ul>
+            <p id="controller">
+                <a onclick="prevSlide()"><span id="prev">&lang;</span></a> 
+                <a onclick="nextSlide()"><span id="next">&rang;</span></a>
+            </p>
         </div>
-    </section>
     <hr style="margin-bottom: 20px;">
     <br>
 
@@ -50,3 +56,63 @@
 
 </body>
 </html>
+<script>
+    let slides = document.querySelector('#slides');
+    let slideImg = document.querySelectorAll('#slides li');
+    let currentIdx = 0; 
+    let prev = document.querySelector('#prev');
+    let next = document.querySelector('#next');
+    slideWidth = 400; 
+    slideMargin = 100; 
+    clone(); 
+    init(); 
+
+    //처음이미지와 마지막 이미지 복사 함수 (무한으로 돌아가게 하기위해)
+    function clone() {
+        let cloneSlide_first = slideImg[0].cloneNode(true);
+        let cloneSlide_last = slides.lastElementChild.cloneNode(true);
+        slides.append(cloneSlide_first); //첫 이미지를 마지막 이미지 다음에 넣어준다
+        slides.insertBefore(cloneSlide_last, slides.firstElementChild);//마지막 이미지 전에 첫 이미지를 넣어준다.
+    }
+
+    //슬라이드 넓이와 위치 초기화 함수
+    function init() {
+        slides.style.width =  (slideImg.length + 2) * (slideWidth + slideMargin) + 'px';
+        slides.style.left = -(slideWidth + slideMargin) + 'px';
+    }
+
+    //오른쪽 화살표 클릭시 수행되는 함수
+    function nextSlide() {
+    
+        if (currentIdx <= slideImg.length - 1) {
+            slides.style.left = -(currentIdx + 2) * (slideWidth + slideMargin) + 'px';
+            slides.style.transition = `${0.5}s ease-out`;
+        }
+        if (currentIdx == slideImg.length - 1) {
+            setTimeout(function () {//마지막 이미지일 경우에 0.5초안에 첫번쨰 이미지로 이동된다.
+                slides.style.left = -(slideWidth + slideMargin) + 'px';
+                slides.style.transition = `${0}s ease-out`;
+            }, 500);
+            currentIdx = -1;
+        }
+        currentIdx += 1;
+    };
+
+    
+    //왼쪽 화살표 클릭시 수행되는 함수
+    function prevSlide(){
+    
+        if (currentIdx >= 0) {
+            slides.style.left = -currentIdx * (slideWidth + slideMargin) + 'px';
+            slides.style.transition = `${0.5}s ease-out`;
+        }
+        if (currentIdx == 0) {
+            setTimeout(function () {
+                slides.style.left = -slideImg.length * (slideWidth + slideMargin) + 'px';
+                slides.style.transition = `${0}s ease-out`;
+            }, 500);
+            currentIdx = slideImg.length;
+        }
+        currentIdx -= 1;
+    };
+</script>
