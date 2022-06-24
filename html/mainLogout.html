@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" href="../css/banner.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <script src="../js/test.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -27,20 +28,30 @@
         </nav>
     </header>
 
-    <br><br>
-        <div id="slideShow">
-            <ul id="slides">
-                <li><img  src="../img/cafe_a.jpg" alt=""></li>
-                <li><img  src="../img/cafe_b.jpg" alt=""></li>
-                <li><img  src="../img/cafe_c.jpg" alt=""></li>
-            </ul>
-            <p id="controller">
-                <a onclick="prevSlide()"><span id="prev">&lang;</span></a> 
-                <a onclick="nextSlide()"><span id="next">&rang;</span></a>
-            </p>
-        </div>
+
+    <section >
+        <div class="slideshow-container">
+
+            <div class="mySlideDiv fade active">
+                <img src="../img/cafe_a.jpg" style="width: 700px; height:500px; margin-left: 350px;"> 
+            </div>
+                   
+            <div class="mySlideDiv fade">
+                <img src="../img/cafe_b.jpg" style="width: 700px; height:500px; margin-left: 350px;"> 
+            </div>
+                   
+            <div class="mySlideDiv fade">
+                <img src="../img/cafe_c.jpg" style="width: 700px; height:500px; margin-left: 350px;">  
+            </div>
+       
+            <!-- <a class="prev" onclick="prevSlide()">&#10094;</a>
+            <a class="next" onclick="nextSlide()">&#10095;</a> -->
+       </div>
+    </section>
+
     <hr style="margin-bottom: 20px;">
     <br>
+
 
 
     <footer id="footer">
@@ -58,63 +69,77 @@
 
 </body>
 </html>
-<script>
-    let slides = document.querySelector('#slides');
-    let slideImg = document.querySelectorAll('#slides li');
-    let currentIdx = 0; 
-    let prev = document.querySelector('#prev');
-    let next = document.querySelector('#next');
-    slideWidth = 400; 
-    slideMargin = 100; 
-    clone(); 
-    init(); 
 
-    //처음이미지와 마지막 이미지 복사 함수 (무한으로 돌아가게 하기위해)
-    function clone() {
-        let cloneSlide_first = slideImg[0].cloneNode(true);
-        let cloneSlide_last = slides.lastElementChild.cloneNode(true);
-        slides.append(cloneSlide_first); //첫 이미지를 마지막 이미지 다음에 넣어준다
-        slides.insertBefore(cloneSlide_last, slides.firstElementChild);//마지막 이미지 전에 첫 이미지를 넣어준다.
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".mySlideDiv").not(".active").hide(); //화면 로딩 후 첫번째 div를 제외한 나머지 숨김
+        
+        setInterval(nextSlide, 4000); //4초(4000)마다 다음 슬라이드로 넘어감
+    });
+    
+    //이전 슬라이드
+    function prevSlide() {
+        $(".mySlideDiv").hide(); //모든 div 숨김
+        var allSlide = $(".mySlideDiv"); //모든 div 객체를 변수에 저장
+        var currentIndex = 0; //현재 나타난 슬라이드의 인덱스 변수
+        
+        //반복문으로 현재 active클래스를 가진 div를 찾아 index 저장
+        $(".mySlideDiv").each(function(index,item){ 
+            if($(this).hasClass("active")) {
+                currentIndex = index;
+            }
+            
+        });
+        
+        //새롭게 나타낼 div의 index
+        var newIndex = 0;
+        
+        if(currentIndex <= 0) {
+            //현재 슬라이드의 index가 0인 경우 마지막 슬라이드로 보냄(무한반복)
+            newIndex = allSlide.length-1;
+        } else {
+            //현재 슬라이드의 index에서 한 칸 만큼 뒤로 간 index 지정
+            newIndex = currentIndex-1;
+        }
+    
+        //모든 div에서 active 클래스 제거
+        $(".mySlideDiv").removeClass("active");
+        
+        //새롭게 지정한 index번째 슬라이드에 active 클래스 부여 후 show()
+        $(".mySlideDiv").eq(newIndex).addClass("active");
+        $(".mySlideDiv").eq(newIndex).show();
+    
     }
-
-    //슬라이드 넓이와 위치 초기화 함수
-    function init() {
-        slides.style.width =  (slideImg.length + 2) * (slideWidth + slideMargin) + 'px';
-        slides.style.left = -(slideWidth + slideMargin) + 'px';
-    }
-
-    //오른쪽 화살표 클릭시 수행되는 함수
+    
+    //다음 슬라이드
     function nextSlide() {
+        $(".mySlideDiv").hide();
+        var allSlide = $(".mySlideDiv");
+        var currentIndex = 0;
+        
+        $(".mySlideDiv").each(function(index,item){
+            if($(this).hasClass("active")) {
+                currentIndex = index;
+            }
+            
+        });
+        
+        var newIndex = 0;
+        
+        if(currentIndex >= allSlide.length-1) {
+            //현재 슬라이드 index가 마지막 순서면 0번째로 보냄(무한반복)
+            newIndex = 0;
+        } else {
+            //현재 슬라이드의 index에서 한 칸 만큼 앞으로 간 index 지정
+            newIndex = currentIndex+1;
+        }
     
-        if (currentIdx <= slideImg.length - 1) {
-            slides.style.left = -(currentIdx + 2) * (slideWidth + slideMargin) + 'px';
-            slides.style.transition = `${0.5}s ease-out`;
-        }
-        if (currentIdx == slideImg.length - 1) {
-            setTimeout(function () {//마지막 이미지일 경우에 0.5초안에 첫번쨰 이미지로 이동된다.
-                slides.style.left = -(slideWidth + slideMargin) + 'px';
-                slides.style.transition = `${0}s ease-out`;
-            }, 500);
-            currentIdx = -1;
-        }
-        currentIdx += 1;
-    };
-
+        $(".mySlideDiv").removeClass("active");
+        $(".mySlideDiv").eq(newIndex).addClass("active");
+        $(".mySlideDiv").eq(newIndex).show();
+        
+    }
     
-    //왼쪽 화살표 클릭시 수행되는 함수
-    function prevSlide(){
-    
-        if (currentIdx >= 0) {
-            slides.style.left = -currentIdx * (slideWidth + slideMargin) + 'px';
-            slides.style.transition = `${0.5}s ease-out`;
-        }
-        if (currentIdx == 0) {
-            setTimeout(function () {
-                slides.style.left = -slideImg.length * (slideWidth + slideMargin) + 'px';
-                slides.style.transition = `${0}s ease-out`;
-            }, 500);
-            currentIdx = slideImg.length;
-        }
-        currentIdx -= 1;
-    };
-</script>
+    </script>
